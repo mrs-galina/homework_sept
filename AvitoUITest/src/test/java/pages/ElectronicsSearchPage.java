@@ -11,6 +11,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class ElectronicsSearchPage {
@@ -23,13 +24,13 @@ public class ElectronicsSearchPage {
     private WebElement searchButton;
     @FindBy(xpath = "//div[@data-marker='search-form/change-location']")
     private WebElement changeLocation;
-    @FindBy(xpath = "//input[@placeholder='Город или регион']")
+    @FindBy(xpath = "//*[@data-marker='popup-location/region']//*[@placeholder='Город или регион']")
     private WebElement inputLocation;
     @FindBy(xpath = "//button[@data-marker='popup-location/region/custom-option([object Object])']")
     private WebElement suggestedLocation;
-    @FindBy(xpath = "//button[@data-marker='popup-location/save-button']")
+    @FindBy(xpath = "//*[@data-marker='popup-location/popup']//button[@data-marker='popup-location/save-button']")
     private WebElement saveLocation;
-    @FindBy(xpath = "//*[contains(text(), 'С Авито Доставкой')]")
+    @FindBy(xpath = "//*[@role='checkbox']//*[contains(text(), 'С Авито Доставкой')]")
     private WebElement checkBoxWithAvitoDelivery;
     @FindBy(xpath = "//*[contains(text(),'Часто ищут')]")
     private WebElement oftenSearched;
@@ -39,8 +40,8 @@ public class ElectronicsSearchPage {
     private WebElement sort;
     @FindBy(xpath = "//button[@data-marker='sort/custom-option(2)']")
     private WebElement sortMoreExpensive;
-    private String xpathElements = "//div[@class='iva-item-titleStep-pdebR']";
-    private String xpathPrices = "//div[@class='iva-item-priceStep-uq2CQ']";
+    private String xpathElements = "//*[@data-marker='item']//*[@class='iva-item-titleStep-pdebR']";
+    private String xpathPrices = "//*[@data-marker='item']//*[@class='iva-item-priceStep-uq2CQ']";
 
     public ElectronicsSearchPage(WebDriver driver) {
         PageFactory.initElements(driver, this);
@@ -82,8 +83,9 @@ public class ElectronicsSearchPage {
         sortMoreExpensive.click();
     }
 
-    public void getFirstThree() {
-        Map<String, String> elementsAndPrices = new HashMap<>();
+    public Map getFirstThree() {
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(xpathElements)));
+        Map<String, String> elementsAndPrices = new LinkedHashMap<>();
         elementsAndPrices.put(
                 driver.findElements(By.xpath(xpathElements)).get(0).getText(),
                 driver.findElements(By.xpath(xpathPrices)).get(0).getText()
@@ -96,6 +98,6 @@ public class ElectronicsSearchPage {
                 driver.findElements(By.xpath(xpathElements)).get(2).getText(),
                 driver.findElements(By.xpath(xpathPrices)).get(2).getText()
         );
-        System.out.println(elementsAndPrices.entrySet());
+        return elementsAndPrices;
     }
 }

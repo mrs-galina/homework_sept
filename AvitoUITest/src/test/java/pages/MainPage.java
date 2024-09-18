@@ -29,16 +29,16 @@ public class MainPage {
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
-    public  void getAllCategories() {
+    public  void clickAllCategories() {
         allCategories.click();
     }
 
-    public void getToElectronics() {
+    public void clickElectronics() {
         actions.moveToElement(electronics);
         electronics.click();
     }
 
-    public void getToOfficeEquipment() {
+    public void clickOfficeEquipment() {
         wait.until(ExpectedConditions.visibilityOf(officeEquipment));
         actions.moveToElement(officeEquipment);
         officeEquipment.click();
