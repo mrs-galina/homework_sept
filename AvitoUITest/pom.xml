@@ -19,6 +19,8 @@
         <selenium.version>4.24.0</selenium.version>
         <allure.junit5.version>2.29.0</allure.junit5.version>
         <aspectj.version>1.9.21</aspectj.version>
+        <allure.junit5.version>2.29.0</allure.junit5.version>
+        <aspectj.version>1.9.21</aspectj.version>
         <allure.version>2.30.0</allure.version>
     </properties>
 
@@ -29,7 +31,6 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
-
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
@@ -41,7 +42,6 @@
             <version>${allure.junit5.version}</version>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
 
     <build>
