@@ -11,6 +11,7 @@
     <modules>
         <module>Calculator</module>
         <module>ApiTests</module>
+        <module>AvitoUITest</module>
     </modules>
 
     <properties>

@@ -83,9 +83,9 @@ public class ElectronicsSearchPage {
         sortMoreExpensive.click();
     }
 
-    public Map getFirstThree() {
+    public LinkedHashMap<String, String> getFirstThree() {
         wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(xpathElements)));
-        Map<String, String> elementsAndPrices = new LinkedHashMap<>();
+        LinkedHashMap<String, String> elementsAndPrices = new LinkedHashMap<>();
         elementsAndPrices.put(
                 driver.findElements(By.xpath(xpathElements)).get(0).getText(),
                 driver.findElements(By.xpath(xpathPrices)).get(0).getText()
