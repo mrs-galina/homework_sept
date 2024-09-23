@@ -1,5 +1,6 @@
 package pages;
 
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -10,9 +11,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.Map;
 
 public class ElectronicsSearchPage {
     private WebDriver driver;
@@ -40,6 +39,10 @@ public class ElectronicsSearchPage {
     private WebElement sort;
     @FindBy(xpath = "//button[@data-marker='sort/custom-option(2)']")
     private WebElement sortMoreExpensive;
+    @FindBy(xpath = "//button[@data-marker='sort/custom-option(1)']")
+    private WebElement sortCheaper;
+    @FindBy(xpath = "//button[@data-marker='sort/custom-option(104)']")
+    private WebElement sortNewer;
     private String xpathElements = "//*[@data-marker='item']//*[@class='iva-item-titleStep-pdebR']";
     private String xpathPrices = "//*[@data-marker='item']//*[@class='iva-item-priceStep-uq2CQ']";
 
@@ -56,14 +59,20 @@ public class ElectronicsSearchPage {
         searchButton.click();
     }
 
-    public void changeLocation(String location) {
+    public void clickLocationPopUp() {
         changeLocation.click();
+    }
+
+    public void changeLocation(String location) {
         inputLocation.click();
         inputLocation.clear();
         inputLocation.sendKeys(location);
         wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//button[@data-marker='popup-location/region/custom-option([object Object])']")));
         wait.until(ExpectedConditions.textToBePresentInElement(suggestedLocation, location));
         suggestedLocation.click();
+    }
+
+    public void clickSaveLocation() {
         saveLocation.click();
     }
 
@@ -81,6 +90,18 @@ public class ElectronicsSearchPage {
         sort.click();
         wait.until(ExpectedConditions.visibilityOf(sortMoreExpensive));
         sortMoreExpensive.click();
+    }
+
+    public void chooseCheaperSort() {
+        sort.click();
+        wait.until(ExpectedConditions.visibilityOf(sortCheaper));
+        sortCheaper.click();
+    }
+
+    public void chooseNewerSort() {
+        sort.click();
+        wait.until(ExpectedConditions.visibilityOf(sortNewer));
+        sortNewer.click();
     }
 
     public LinkedHashMap<String, String> getFirstThree() {

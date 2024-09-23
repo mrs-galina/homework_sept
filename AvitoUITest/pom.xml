@@ -23,6 +23,7 @@
         <aspectj.version>1.9.21</aspectj.version>
         <allure.version>2.30.0</allure.version>
         <ashot.version>1.5.4</ashot.version>
+        <cucumber.version>7.18.1</cucumber.version>
     </properties>
 
     <dependencies>
@@ -48,6 +49,19 @@
             <artifactId>ashot</artifactId>
             <version>${ashot.version}</version>
         </dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-java</artifactId>
+            <version>${cucumber.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-junit</artifactId>
+            <version>${cucumber.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+
 
     </dependencies>
 

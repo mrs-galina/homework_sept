@@ -87,7 +87,9 @@ public class AvitoTest {
     @Step("Changing location to Vladivostok")
     public void changeLocation() {
         System.out.println("Changing location to " + CITY);
+        electronicsSearchPage.clickLocationPopUp();
         electronicsSearchPage.changeLocation(CITY);
+        electronicsSearchPage.clickSaveLocation();
         saveAllureScreenshot(driver);
     }
 
