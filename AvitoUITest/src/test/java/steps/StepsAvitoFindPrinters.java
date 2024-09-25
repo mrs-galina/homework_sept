@@ -4,13 +4,12 @@ import io.cucumber.java.ParameterType;
 import io.cucumber.java.ru.И;
 import io.cucumber.java.ru.Пусть;
 import io.cucumber.java.ru.Тогда;
-import util.CategorisOfElectronics;
 import util.TypesOfSort;
 
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static java.lang.Integer.parseInt;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static util.Driver.driver;
 import static util.Driver.mainPage;
@@ -23,24 +22,18 @@ import static util.TypesOfSort.по_дате;
 public class StepsAvitoFindPrinters {
 
     @ParameterType(".*")
-    public CategorisOfElectronics category(String category) {
-        return CategorisOfElectronics.valueOf(category.trim());
-    }
-
-    @ParameterType(".*")
     public TypesOfSort sort(String sort) {
         return TypesOfSort.valueOf(sort.trim());
     }
 
-    @Пусть("открыт ресурс авито")
+    @Пусть("открыть ресурс авито")
     public static void goToMainPage() {
         System.out.println("Going to the main page");
         driver.get("https://www.avito.ru/");
     }
 
-    @И("в выпадающем списке категорий выбрана {category}")
-    public static void goToOfficeEquipmentSearchPage(CategorisOfElectronics category) {
-        //to do - тут должна быть реализация разных категорий
+    @И("в выпадающем списке выбрать категорию оргтехника")
+    public static void goToOfficeEquipmentSearchPage() {
             System.out.println("Clicking 'all categories'");
             mainPage.clickAllCategories();
             System.out.println("Clicking 'electronics'");
@@ -49,13 +42,14 @@ public class StepsAvitoFindPrinters {
             mainPage.clickOfficeEquipment();
     }
 
-    @И("в поле поиска введено значение {word}")
+    @И("в поле поиска ввести значение {word}")
     public static void inputPrinterInSearchLine(String thing) {
+        String input = thing.replaceAll(("\""),"");
         System.out.println("Input 'Принтер' in the searh line");
-        electronicsSearchPage.search(thing);
+        electronicsSearchPage.search(input);
     }
 
-    @И("активирован чекбокс с авито доставкой")
+    @И("активировать чекбокс с авито доставкой")
     public static void clickAvitoDelivery() {
         System.out.println("Selecting avito delivery to be active");
         electronicsSearchPage.selectAvitoDelivery();
@@ -67,53 +61,61 @@ public class StepsAvitoFindPrinters {
         electronicsSearchPage.clickLocationPopUp();
     }
 
-    @Тогда("в поле регион введено значение {word}")
+    @Тогда("в поле регион ввести значение {word}")
     public static void inputVladivostok(String city) {
+        String input = city.replaceAll(("\""),"");
         System.out.println("Input vladivostok");
-        electronicsSearchPage.changeLocation(city);
+        electronicsSearchPage.changeLocation(input);
     }
 
-    @И("нажата кнопка показать объявления")
+    @И("нажать кнопку показать объявления")
     public static void clickShowAds() {
         System.out.println("Clicking save city and show ads");
         electronicsSearchPage.clickSaveLocation();
     }
 
-    @Тогда("открылась страница результаты по запросу {word}")
+    @Тогда("открыта страница результаты по запросу {word}")
     public static void checkPageIsOpened(String thing) {
-        System.out.println("Checking the page for " + thing + " is opened");
-        assertEquals("https://www.avito.ru/vladivostok/orgtehnika_i_rashodniki?d=1&q=%D0%9F%D1%80%D0%B8%D0%BD%D1%82%D0%B5%D1%80", driver.getCurrentUrl(),
-                "Another page was opened: " + driver.getCurrentUrl() + ", but should be " + "https://www.avito.ru/vladivostok/orgtehnika_i_rashodniki?d=1&q=%D0%9F%D1%80%D0%B8%D0%BD%D1%82%D0%B5%D1%80");
-    }
-
-    @И("в выпадающем списке сортировка выбрано значение {sort}")
-    public static void chooseSortForMoreExpensiveFirst(TypesOfSort sort) {
-        if (sort == дешевле) {
-            System.out.println("Selecting sort for cheaper first");
-            electronicsSearchPage.chooseCheaperSort();
-        } else if (sort == по_дате) {
-            System.out.println("Selecting sort for newer first");
-            electronicsSearchPage.chooseNewerSort();
-        } else if (sort == дороже)
-        System.out.println("Choosing sort for more expensive first");
-        electronicsSearchPage.chooseMoreExpensiveSort();
-    }
-
-    @И("в консоль выведено значение названия и цены {int} первых товаров")
-    public static void showThreeMostExpensivePrinters(int num) {
-        if (num == 3) {
-            System.out.println("Getting three most expensive printers");
-            Map<String, String> result = electronicsSearchPage.getFirstThree();
-            System.out.println("Checking that the prices contain ₽ symbol");
-            List<String> prices = result.values().stream().toList();
-            assertTrue(-1 != prices.get(0).indexOf('₽'),
-                    "Failed: first item price doesn't have the symbol");
-            assertTrue(-1 != prices.get(1).indexOf('₽'),
-                    "Failed: second item price doesn't have the symbol");
-            assertTrue(-1 != prices.get(2).indexOf('₽'),
-                    "Failed: third item price doesn't have the symbol");
-            System.out.println("Three most expensive printers are: " +
-                    '\n' + result.entrySet());
+        String input = thing.replaceAll(("\""),"");
+        String xpath = "//*[@data-marker='breadcrumbs']//span[contains(text(), '" + input + "')]";
+        assertTrue(electronicsSearchPage.elementExists(xpath), "Failed: wrong page is opened");
         }
+
+    @И("в выпадающем списке сортировка выбрать значение {sort}")
+    public static void chooseSortForMoreExpensiveFirst(TypesOfSort sort) {
+        switch (sort) {
+            case дороже -> {
+                printSortInfo(дороже);
+                electronicsSearchPage.chooseMoreExpensiveSort();
+            }
+            case дешевле -> {
+                printSortInfo(дешевле);
+                electronicsSearchPage.chooseCheaperSort();
+            }
+            case по_дате -> {
+                printSortInfo(по_дате);
+                electronicsSearchPage.chooseNewerSort();
+            }
+        }
+    }
+
+    @И("в консоль выведено значение названия и цены {word} первых товаров")
+    public static void showThreeThings(String num) {
+
+        int input = parseInt(num.replaceAll(("\""),""));
+        System.out.println("Getting first things");
+        Map<String, String> result = electronicsSearchPage.getFirstThree();
+        System.out.println("Checking that the prices contain ₽ symbol");
+        List<String> prices = result.values().stream().toList();
+        for (int i = 0; i < input; i++) {
+            assertTrue(-1 != prices.get(i).indexOf('₽'),
+                    "Failed: item price doesn't have the symbol, item number: " + i);
+        }
+        System.out.println("The thing found: " +
+                    '\n' + result.entrySet());
+    }
+
+    public static void printSortInfo (TypesOfSort sort) {
+        System.out.println("Choosing sort type: " + sort.value);
     }
 }

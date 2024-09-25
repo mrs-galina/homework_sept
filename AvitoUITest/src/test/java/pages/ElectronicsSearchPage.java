@@ -50,7 +50,7 @@ public class ElectronicsSearchPage {
         PageFactory.initElements(driver, this);
         this.driver = driver;
         actions = new Actions(driver);
-        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait = new WebDriverWait(driver, Duration.ofSeconds(30));
     }
 
     public void search(String search) {
@@ -120,5 +120,28 @@ public class ElectronicsSearchPage {
                 driver.findElements(By.xpath(xpathPrices)).get(2).getText()
         );
         return elementsAndPrices;
+    }
+// наверно, лучше было бы этот и верхний метод объединить
+    public LinkedHashMap<String, String> getFirstElements(int amount) {
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(xpathElements)));
+        LinkedHashMap<String, String> elementsAndPrices = new LinkedHashMap<>();
+
+        for (int i = 0; i < amount; i++) {
+            elementsAndPrices.put(
+                    driver.findElements(By.xpath(xpathElements)).get(i).getText(),
+                    driver.findElements(By.xpath(xpathPrices)).get(i).getText()
+            );
+        }
+        return elementsAndPrices;
+    }
+
+    public boolean elementExists(String xpath) {
+        try {
+            driver.findElement(By.xpath(xpath));
+        }
+        catch (Exception e) {
+            return false;
+        }
+        return true;
     }
 }

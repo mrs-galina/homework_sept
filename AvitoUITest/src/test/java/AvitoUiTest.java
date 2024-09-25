@@ -12,6 +12,5 @@ public class AvitoUiTest {
 
     @org.junit.Test
     public void run(String[] args) {
-
     }
 }

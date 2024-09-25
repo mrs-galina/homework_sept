@@ -26,14 +26,16 @@ public class MainPage {
         PageFactory.initElements(driver, this);
         this.driver = driver;
         actions = new Actions(driver);
-        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait = new WebDriverWait(driver, Duration.ofSeconds(30));
     }
 
     public  void clickAllCategories() {
+        wait.until(ExpectedConditions.elementToBeClickable(allCategories));
         allCategories.click();
     }
 
     public void clickElectronics() {
+        wait.until(ExpectedConditions.visibilityOf(electronics));
         actions.moveToElement(electronics);
         electronics.click();
     }
