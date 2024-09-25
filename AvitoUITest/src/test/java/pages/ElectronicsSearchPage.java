@@ -125,7 +125,6 @@ public class ElectronicsSearchPage {
     public LinkedHashMap<String, String> getFirstElements(int amount) {
         wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(xpathElements)));
         LinkedHashMap<String, String> elementsAndPrices = new LinkedHashMap<>();
-
         for (int i = 0; i < amount; i++) {
             elementsAndPrices.put(
                     driver.findElements(By.xpath(xpathElements)).get(i).getText(),

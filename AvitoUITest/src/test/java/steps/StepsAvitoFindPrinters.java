@@ -104,7 +104,7 @@ public class StepsAvitoFindPrinters {
 
         int input = parseInt(num.replaceAll(("\""),""));
         System.out.println("Getting first things");
-        Map<String, String> result = electronicsSearchPage.getFirstThree();
+        Map<String, String> result = electronicsSearchPage.getFirstElements(input);
         System.out.println("Checking that the prices contain ₽ symbol");
         List<String> prices = result.values().stream().toList();
         for (int i = 0; i < input; i++) {
